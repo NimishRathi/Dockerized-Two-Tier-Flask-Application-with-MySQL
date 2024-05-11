@@ -12,3 +12,23 @@ In this project, we have containerized a two-tier web application consisting of 
 ### Docker Configuration
 **Dockerfile for Flask App**
 The Dockerfile for the Flask application sets up a Python environment, installs dependencies, and copies the Flask app code into the container.
+
+```markdown
+```Dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN pip install mysqlclient
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["python", "app.py"]
